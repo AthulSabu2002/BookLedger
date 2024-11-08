@@ -28,7 +28,7 @@ form.addEventListener('submit', async (event) => {
                 const data = await response.json();
                 console.log('Form submitted successfully:', data);
 
-                window.location.href = '/dashboard';
+                window.location.href = '/admin/dashboard';
             } else {
 
                 errorMessage.textContent = 'Invalid username or password. Please try again.';

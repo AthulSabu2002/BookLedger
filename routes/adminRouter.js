@@ -10,7 +10,11 @@ const {
 const urlencodedParser = bodyParser.urlencoded({ extended: true });
 
 router.get('/login', function(req, res, next) {
-  res.render('login');
+  res.render('adminLogin');
+});
+
+router.get('/inventory', function(req, res, next) {
+  res.render('inventory');
 });
 
 router.route("/dashboard").get(renderAdminDashboard);

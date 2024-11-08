@@ -11,7 +11,6 @@ form.addEventListener('submit', async (event) => {
         errorMessage.textContent = 'Please enter both username and password.';
     } else {
         try {
-            // Sending form data to the server
             const response = await fetch('/login', {
                 method: 'POST',
                 headers: {
@@ -24,14 +23,11 @@ form.addEventListener('submit', async (event) => {
             });
 
             if (response.ok) {
-                // If the server returns a successful response
                 const data = await response.json();
                 console.log('Form submitted successfully:', data);
 
-                // Redirect or handle success logic here
-                window.location.href = '/dashboard'; // Example redirect
+                window.location.href = '/users/dashboard'; 
             } else {
-                // Handle errors such as incorrect username/password
                 errorMessage.textContent = 'Invalid username or password. Please try again.';
             }
         } catch (error) {
