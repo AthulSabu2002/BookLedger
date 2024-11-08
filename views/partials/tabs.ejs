@@ -1,9 +1,9 @@
 <div class="header">
     <ul class="header-tabs">
-        <li class="active">Books</li>
-        <li>Borrowers</li>
-        <li>Loans</li>
-        <li>Inventory</li>
-        <li>Reports</li>
+        <li class="<%= activeTab === 'Books' ? 'active' : '' %>">Books</li>
+        <li class="<%= activeTab === 'Borrowers' ? 'active' : '' %>">Borrowers</li>
+        <li class="<%= activeTab === 'Loans' ? 'active' : '' %>">Loans</li>
+        <li class="<%= activeTab === 'Inventory' ? 'active' : '' %>">Inventory</li>
+        <li class="<%= activeTab === 'Reports' ? 'active' : '' %>">Reports</li>
     </ul>
 </div>

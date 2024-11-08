@@ -65,7 +65,7 @@ const loginUser = asyncHandler(async (req, res) => {
 const renderAdminDashboard = asyncHandler(async (req, res) => {
     try {
         const books = [];
-        res.render('adminDashboard', {books});
+        res.render('adminDashboard', {books, activeTab: 'Books' });
     } catch (error) {
         
     }

@@ -14,7 +14,7 @@ router.get('/login', function(req, res, next) {
 });
 
 router.get('/inventory', function(req, res, next) {
-  res.render('inventory');
+  res.render('inventory', { activeTab: 'Inventory' });
 });
 
 router.route("/dashboard").get(renderAdminDashboard);

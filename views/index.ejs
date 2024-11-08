@@ -1,11 +1,56 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BookLedger</title>
+  <link rel="stylesheet" href="/stylesheets/index.css">
+</head>
+
+<body>
+  <div class="viewport-container">
+    <header>
+      <div class="logo">BookLedger</div>
+      <nav>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Features</a></li>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="hero">
+      <h1>Elevate Your Library Management</h1>
+      <p>Unlock the power of our cutting-edge library tools.</p>
+      <a href="/login" class="cta-button">Get Started</a>
+    </div>
+  </div>
+
+  <div class="features">
+    <div class="feature-card">
+      <i class="feature-icon">📚</i>
+      <h3>Book Cataloging</h3>
+      <p>Easily manage your library's book collection.</p>
+    </div>
+    <div class="feature-card">
+      <i class="feature-icon">👥</i>
+      <h3>Patron Management</h3>
+      <p>Keep track of your library's patrons and their activities.</p>
+    </div>
+    <div class="feature-card">
+      <i class="feature-icon">📚</i>
+      <h3>Circulation</h3>
+      <p>Efficient check-in and check-out processes.</p>
+    </div>
+    <div class="feature-card">
+      <i class="feature-icon">📊</i>
+      <h3>Reporting</h3>
+      <p>Generate detailed reports for your library's operations.</p>
+    </div>
+  </div>
+</body>
+
 </html>
