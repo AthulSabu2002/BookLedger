@@ -4,7 +4,9 @@ const bodyParser = require("body-parser");
 
 const {
   loginUser,
-  renderAdminDashboard
+  renderAdminDashboard,
+  renderInventory,
+  add_book
 } = require("../controllers/adminController");
 
 const urlencodedParser = bodyParser.urlencoded({ extended: true });
@@ -13,12 +15,12 @@ router.get('/login', function(req, res, next) {
   res.render('adminLogin');
 });
 
-router.get('/inventory', function(req, res, next) {
-  res.render('inventory', { activeTab: 'Inventory' });
-});
+router.route("/login").post(urlencodedParser, loginUser);
 
 router.route("/dashboard").get(renderAdminDashboard);
 
-router.route("/login").post(urlencodedParser, loginUser);
+router.route("/inventory").get(renderInventory);
+
+router.route("/add-book").post(urlencodedParser, add_book);
 
 module.exports = router;

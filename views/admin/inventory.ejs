@@ -4,127 +4,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 0;
-        }
-
-        .dashboard-container {
-            width: 100%;
-            height: 100vh;
-            background-color: #fff;
-            border: none;
-            box-shadow: none;
-            border-radius: 0;
-            overflow: auto;
-        }
-
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #3f51b5;
-            color: #fff;
-            padding: 20px;
-            font-weight: bold;
-            position: sticky;
-            top: 0;
-            z-index: 1;
-        }
-
-        .header-tabs {
-            display: flex;
-            list-style-type: none;
-        }
-
-        .header-tabs li {
-            padding: 10px 20px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .header-tabs li.active {
-            background-color: #303f9f;
-        }
-
-
-        .footer {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            background-color: #f0f0f0;
-            padding: 16px 20px;
-            position: sticky;
-            bottom: 0;
-        }
-
-        .footer .logout {
-            background-color: #e53935;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .footer .logout:hover {
-            background-color: #c62828;
-        }
-
-
-        @media (max-width: 1024px) {
-            .header-tabs li {
-                padding: 8px 16px;
-                font-size: 14px;
-            }
-
-
-            .footer .logout {
-                padding: 8px 16px;
-                font-size: 12px;
-            }
-        }
-    </style>
+    <title>BookLedger</title>
+    <link rel="stylesheet" href="/stylesheets/inventory.css">
 </head>
 
 <body>
     <div class="dashboard-container">
+        <header class="header">
+            <h1>BookLedger</h1>
+            <ul class="header-tabs">
+                <li class="active" data-tab="view">View Books</li>
+                <li data-tab="add">Add Book</li>
+                <li data-tab="update">Update Book</li>
+                <li data-tab="delete">Remove Book</li>
+            </ul>
+        </header>
 
-        <%- include('../partials/tabs') %>
-            
-            <div class="footer">
-                <button class="logout">Logout</button>
+        <main class="content-area">
+            <div id="view" class="tab-content active">
+                <div class="search-bar">
+                    <input type="text" class="form-control" placeholder="Search by title, author, ISBN...">
+                    <button class="btn btn-primary">Search</button>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ISBN</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Genre</th>
+                                <th>Publication Year</th>
+                                <th>Status</th>
+                                <th>Copies Available</th> <!-- Updated column name -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (books.length> 0) { %>
+                                <% books.forEach(book=> { %>
+                                    <tr>
+                                        <td>
+                                            <%= book.isbn %>
+                                        </td>
+                                        <td>
+                                            <%= book.title %>
+                                        </td>
+                                        <td>
+                                            <%= book.author %>
+                                        </td>
+                                        <td>
+                                            <%= book.genre %>
+                                        </td>
+                                        <td>
+                                            <%= book.publicationYear %>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="status-badge status-<%= book.status ? book.status.toLowerCase().replace(' ', '-') : 'available' %>">
+                                                <%= book.status || 'Available' %>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <%= book.copies ? book.copies.length : 0 %>
+                                                <!-- Display the number of available copies -->
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                                        <% } else { %>
+                                            <tr>
+                                                <td colspan="7" style="text-align: center;">No data available</td>
+                                            </tr>
+                                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
             </div>
+
+
+            <div id="add" class="tab-content">
+                <form action="/admin/add-book" method="post">
+                    <div class="form-group">
+                        <label>ISBN</label>
+                        <input type="text" class="form-control" name="isbn" required
+                            pattern="^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+" title="Please enter a valid ISBN">
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" class="form-control" name="title" required>
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Author</label>
+                        <input type="text" class="form-control" name="author" required>
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Co-Authors (optional)</label>
+                        <input type="text" class="form-control" name="coAuthors" placeholder="Enter co-authors, separated by commas">
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Genre</label>
+                        <select class="form-control" name="genre" required>
+                            <option value="Fiction">Fiction</option>
+                            <option value="Non-Fiction">Non-Fiction</option>
+                            <option value="Science">Science</option>
+                            <option value="Technology">Technology</option>
+                            <option value="History">History</option>
+                            <option value="Biography">Biography</option>
+                            <option value="Children">Children</option>
+                            <option value="Young Adult">Young Adult</option>
+                            <option value="Academic">Academic</option>
+                            <option value="Reference">Reference</option>
+                            <option value="Poetry">Poetry</option>
+                            <option value="Drama">Drama</option>
+                            <option value="Classic Literature">Classic Literature</option>
+                        </select>
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Sub-Genres (optional)</label>
+                        <input type="text" class="form-control" name="subGenres" placeholder="Enter sub-genres, separated by commas">
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Publisher</label>
+                        <input type="text" class="form-control" name="publisher" required>
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Publication Year</label>
+                        <input type="number" class="form-control" name="publicationYear" required min="1000" max="2024">
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Edition</label>
+                        <input type="text" class="form-control" name="edition" placeholder="Optional">
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Language</label>
+                        <input type="text" class="form-control" name="language" value="English" required>
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control" name="description" maxlength="2000" rows="3"
+                            placeholder="Description (max 2000 characters)"></textarea>
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Page Count</label>
+                        <input type="number" class="form-control" name="pageCount" min="1" required>
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Number of Copies</label>
+                        <input type="number" class="form-control" name="numberOfCopies" required min="1">
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Keywords (optional)</label>
+                        <input type="text" class="form-control" name="metadata[keywords]"
+                            placeholder="Enter keywords, separated by commas">
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Subjects (optional)</label>
+                        <input type="text" class="form-control" name="metadata[subjects]"
+                            placeholder="Enter subjects, separated by commas">
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Target Audience (optional)</label>
+                        <input type="text" class="form-control" name="metadata[targetAudience]" value="All"
+                            placeholder="Target Audience (default: All)">
+                    </div>
+                
+                    <button type="submit" class="btn btn-primary">Add Book</button>
+                </form>
+            </div>
+
+            <div id="update" class="tab-content">
+                <form>
+                    <div class="form-group">
+                        <label>ISBN</label>
+                        <input type="text" class="form-control" required pattern="[0-9]{13}">
+                    </div>
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Author</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Genre</label>
+                        <select class="form-control" required>
+                            <option value="">Select Genre</option>
+                            <option value="fiction">Fiction</option>
+                            <option value="non-fiction">Non-Fiction</option>
+                            <option value="classic">Classic Literature</option>
+                            <option value="science">Science</option>
+                            <option value="history">History</option>
+                            <option value="biography">Biography</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select class="form-control" required>
+                            <option value="available">Available</option>
+                            <option value="borrowed">Borrowed</option>
+                            <option value="reserved">Reserved</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Due Date (if borrowed)</label>
+                        <input type="date" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Book</button>
+                </form>
+            </div>
+
+            <div id="delete" class="tab-content">
+                <form>
+                    <div class="form-group">
+                        <label>ISBN</label>
+                        <input type="text" class="form-control" required pattern="[0-9]{13}">
+                    </div>
+                    <div class="form-group">
+                        <label>Reason for Removal</label>
+                        <select class="form-control" required>
+                            <option value="">Select Reason</option>
+                            <option value="damaged">Damaged</option>
+                            <option value="lost">Lost</option>
+                            <option value="outdated">Outdated</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-danger">Remove Book</button>
+                </form>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <span class="footer-text">© 2024 BookLedger</span>
+            <button class="btn btn-danger">Logout</button>
+        </footer>
     </div>
-    <script>
 
-        const headerTabs = document.querySelectorAll('.header-tabs li');
-        headerTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-
-                headerTabs.forEach(t => t.classList.remove('active'));
-
-                tab.classList.add('active');
-
-            });
-        });
-    </script>
+    <script src="/javascripts/inventory.js"></script>
 </body>
 
 </html>
