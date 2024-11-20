@@ -17,6 +17,7 @@
                 <li data-tab="add">Add Book</li>
                 <li data-tab="update">Update Book</li>
                 <li data-tab="delete">Remove Book</li>
+                <li data-tab="category">Add Category</li>
             </ul>
         </header>
 
@@ -228,6 +229,23 @@
                 </form>
             </div>
 
+            <div id="category" class="tab-content">
+                <form id="add-category-form">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <input type="text" name="categoryName" class="form-control" required>
+                    </div>
+            
+                    <!-- Placeholder for success message -->
+                    <div id="success-message" class="alert alert-success" style="display: none;"></div>
+            
+                    <!-- Placeholder for error message -->
+                    <div id="error-message" class="alert alert-danger" style="display: none;"></div>
+            
+                    <button type="submit" class="btn btn-primary">Add Category</button>
+                </form>
+            </div>
+
             <div id="delete" class="tab-content">
                 <form>
                     <div class="form-group">
@@ -258,4 +276,4 @@
     <script src="/javascripts/inventory.js"></script>
 </body>
 
-</html>
+</html> 

@@ -1,14 +1,12 @@
 const bcrypt = require('bcrypt');
 const asyncHandler = require('express-async-handler');
-
-
 const User = require('../models/userModel');
 const Book = require('../models/booksModel');
+const Category = require('../models/categoryModel');
 
 const loginUser = asyncHandler(async (req, res) => {
   try {
     const { username, password } = req.body;
-
 
     if (!username || !password) {
       return res.status(400).json({
@@ -78,8 +76,6 @@ const renderInventory = asyncHandler(async (req, res) => {
     try {
         const books = await Book.find();
 
-        console.log(books);
-
         res.render('inventory', {books});
     } catch (error) {
         
@@ -93,8 +89,6 @@ const add_book = asyncHandler(async (req, res) => {
                 isbn, title, author, coAuthors, genre, subGenres, publisher, publicationYear,
                 edition, language, description, pageCount, metadata, numberOfCopies
           } = req.body;
-
-        console.log('req', req.body);
 
 
         const copies = Array.from({ length: numberOfCopies }, (_, i) => ({
@@ -130,10 +124,61 @@ const add_book = asyncHandler(async (req, res) => {
     }
 });
 
+const update_book = asyncHandler(async (req, res) => {
+    try {
+        console.log(req.body);
+
+    } catch (error) {
+      console.log(error);
+    }
+});
+
+
+const add_category = asyncHandler(async (req, res) => {
+    try {
+        const { categoryName, description } = req.body;
+
+        if (!categoryName) {
+            return res.status(400).json({
+                success: false,
+                message: 'Category name is required'
+            });
+        }
+
+        const existingCategory = await Category.findOne({ name: categoryName });
+        if (existingCategory) {
+            return res.status(400).json({
+                success: false,
+                message: 'Category already exists'
+            });
+        }
+
+        const category = await Category.create({
+            name: categoryName,
+            description: description || ''
+        });
+
+        res.status(201).json({
+            success: true,
+            message: 'Category added successfully!',
+            category
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: 'An error occurred while adding the category.'
+        });
+    }
+});
+
 
 module.exports = {
   loginUser,
   renderAdminDashboard,
   renderInventory,
-  add_book
+  add_book,
+  update_book,
+  add_category
 };
