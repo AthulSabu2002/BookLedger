@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const asyncHandler = require('express-async-handler');
 const User = require('../models/userModel');
 const Book = require('../models/booksModel');
-const Category = require('../models/categoryModel');
+const Genre = require('../models/genreModel');
 
 const loginUser = asyncHandler(async (req, res) => {
   try {
@@ -75,8 +75,8 @@ const renderAdminDashboard = asyncHandler(async (req, res) => {
 const renderInventory = asyncHandler(async (req, res) => {
     try {
         const books = await Book.find();
-
-        res.render('inventory', {books});
+        const genres = await Genre.find();
+        res.render('inventory', {books, genres, activeTab: 'Inventory' });
     } catch (error) {
         
     }
@@ -141,26 +141,26 @@ const add_category = asyncHandler(async (req, res) => {
         if (!categoryName) {
             return res.status(400).json({
                 success: false,
-                message: 'Category name is required'
+                message: 'Genre name is required'
             });
         }
 
-        const existingCategory = await Category.findOne({ name: categoryName });
+        const existingCategory = await Genre.findOne({ name: categoryName });
         if (existingCategory) {
             return res.status(400).json({
                 success: false,
-                message: 'Category already exists'
+                message: 'Genre already exists'
             });
         }
 
-        const category = await Category.create({
+        const category = await Genre.create({
             name: categoryName,
             description: description || ''
         });
 
         res.status(201).json({
             success: true,
-            message: 'Category added successfully!',
+            message: 'Genre added successfully!',
             category
         });
 
@@ -168,7 +168,7 @@ const add_category = asyncHandler(async (req, res) => {
         console.error(error);
         res.status(500).json({
             success: false,
-            message: 'An error occurred while adding the category.'
+            message: 'An error occurred while adding the Genre.'
         });
     }
 });

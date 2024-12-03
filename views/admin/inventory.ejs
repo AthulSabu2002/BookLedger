@@ -11,13 +11,16 @@
 <body>
     <div class="dashboard-container">
         <header class="header">
-            <h1>BookLedger</h1>
+            <div class="header-content">
+                <h1>BookLedger</h1>
+                <button class="menu-toggle">☰</button>
+            </div>
             <ul class="header-tabs">
                 <li class="active" data-tab="view">View Books</li>
                 <li data-tab="add">Add Book</li>
                 <li data-tab="update">Update Book</li>
                 <li data-tab="delete">Remove Book</li>
-                <li data-tab="category">Add Category</li>
+                <li data-tab="category">Add Genre</li>
             </ul>
         </header>
 
@@ -108,19 +111,12 @@
                     <div class="form-group">
                         <label>Genre</label>
                         <select class="form-control" name="genre" required>
-                            <option value="Fiction">Fiction</option>
-                            <option value="Non-Fiction">Non-Fiction</option>
-                            <option value="Science">Science</option>
-                            <option value="Technology">Technology</option>
-                            <option value="History">History</option>
-                            <option value="Biography">Biography</option>
-                            <option value="Children">Children</option>
-                            <option value="Young Adult">Young Adult</option>
-                            <option value="Academic">Academic</option>
-                            <option value="Reference">Reference</option>
-                            <option value="Poetry">Poetry</option>
-                            <option value="Drama">Drama</option>
-                            <option value="Classic Literature">Classic Literature</option>
+                            <option value="">Select Genre</option>
+                            <% for(let i=0; i < genres.length; i++) { %>
+                                <option value="<%= genres[i].name %>">
+                                    <%= genres[i].name %>
+                                </option>
+                                <% } %>
                         </select>
                     </div>
                 
@@ -205,12 +201,9 @@
                         <label>Genre</label>
                         <select class="form-control" required>
                             <option value="">Select Genre</option>
-                            <option value="fiction">Fiction</option>
-                            <option value="non-fiction">Non-Fiction</option>
-                            <option value="classic">Classic Literature</option>
-                            <option value="science">Science</option>
-                            <option value="history">History</option>
-                            <option value="biography">Biography</option>
+                            <% for(let i=0; i < genres.length; i++) { %>
+                                <option value="<%= genres[i].name %>"><%= genres[i].name %></option>
+                            <% } %>
                         </select>
                     </div>
                     <div class="form-group">
@@ -235,13 +228,10 @@
                         <label>Category</label>
                         <input type="text" name="categoryName" class="form-control" required>
                     </div>
-            
-                    <!-- Placeholder for success message -->
-                    <div id="success-message" class="alert alert-success" style="display: none;"></div>
-            
-                    <!-- Placeholder for error message -->
-                    <div id="error-message" class="alert alert-danger" style="display: none;"></div>
-            
+
+                    <div id="success-message" class="alert alert-success"></div>
+                    <div id="error-message" class="alert alert-danger"></div>
+
                     <button type="submit" class="btn btn-primary">Add Category</button>
                 </form>
             </div>
@@ -276,4 +266,4 @@
     <script src="/javascripts/inventory.js"></script>
 </body>
 
-</html> 
+</html>

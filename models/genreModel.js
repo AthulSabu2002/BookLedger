@@ -1,7 +1,7 @@
 
 const mongoose = require('mongoose');
 
-const categorySchema = new mongoose.Schema({
+const genreSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, 'Category name is required'],
@@ -20,7 +20,7 @@ const categorySchema = new mongoose.Schema({
     },
     parentCategory: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category',
+        ref: 'Genre',
         default: null
     },
     isActive: {
@@ -32,11 +32,11 @@ const categorySchema = new mongoose.Schema({
 });
 
 // Create slug before saving
-categorySchema.pre('save', function(next) {
+genreSchema.pre('save', function(next) {
     this.slug = this.name.toLowerCase().replace(/[^a-zA-Z0-9]/g, '-');
     next();
 });
 
-const Category = mongoose.model('Category', categorySchema);
+const Genre = mongoose.model('Category', genreSchema);
 
-module.exports = Category;
+module.exports = Genre;
